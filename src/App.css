@@ -1,368 +1,170 @@
-/* src/App.css */
-:root{
-  --bg:#0b1020;
-  --card:#0f1724;
-  --accent:#ef4444; /* rojo */
-  --muted:#9aa6bf;
-  --glass: rgba(255,255,255,0.04);
-}
+/* Aquí agregaré el CSS mejorado, responsivo y con fondo de pokebolas */
 
-/* Fondo con pokeballs (SVG pequeño repetido) */
-body, html, #root {
-  height: 100%;
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02), transparent 10%),
-              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.015), transparent 8%),
-              var(--bg);
-  color: #e6eef8;
-}
-
-/* repeated pokeball svg as subtle overlay */
-.app::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:
-    radial-gradient(circle at 0 0, rgba(255,255,255,0.02), transparent 10%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='rgba(255,255,255,0.02)'/><path d='M4 32h56' stroke='rgba(255,255,255,0.03)' stroke-width='4'/><circle cx='32' cy='32' r='8' fill='rgba(255,255,255,0.03)'/></svg>");
-  background-repeat: repeat;
-  background-size: 220px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-}
-
-/* Layout */
-.header{
-  padding: 18px 28px;
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  background: linear-gradient(180deg, rgba(11,16,32,0.9), rgba(11,16,32,0.6));
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-}
-.header h1{ margin:0; font-size:22px; letter-spacing:1px; }
-
-.main{
-  display: grid;
-  grid-template-columns: 320px 1fr 360px;
-  gap: 18px;
+/* Fondo general */
+.app {
+  background: url("https://wallpapercave.com/wp/wp2754963.png");
+  background-size: cover;
+  min-height: 100vh;
   padding: 20px;
   position: relative;
-  z-index: 2;
 }
 
-/* Sidebar */
-.sidebar{
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.03);
-  height: calc(100vh - 110px);
-  display:flex;
-  flex-direction:column;
-}
-.search{
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  margin-bottom: 10px;
-  background: rgba(255,255,255,0.02);
-  color: #e6eef8;
-}
-.list-scroll{
-  overflow:auto;
-  flex:1;
-}
-.list-item{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:8px;
-  border-radius:8px;
-  cursor:pointer;
-  transition: background .12s;
-}
-.list-item:hover{ background: rgba(255,255,255,0.02); }
-.list-thumb{ width:42px; height:42px; object-fit:contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
-
-/* Grid of cards */
-.content{
-  min-height: calc(100vh - 110px);
-}
-.grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 16px;
-}
-
-/* Card */
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius: 12px;
-  padding: 10px;
-  text-align:center;
-  border: 1px solid rgba(255,255,255,0.03);
-  cursor:pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
-}
-.card-img{ width:100%; padding: 8px 6px; display:flex; align-items:center; justify-content:center; }
-.card-img img{ width: 96px; height:96px; object-fit:contain; }
-
-/* Card body */
-.card-body{ width:100%; display:flex; justify-content:space-between; align-items:center; padding: 6px 8px; }
-.poke-id{ color:var(--muted); font-size:12px; }
-.poke-name{ font-weight:700; text-transform:capitalize; }
-
-/* Detail panel */
-.detail{
-  height: calc(100vh - 110px);
-  overflow:auto;
-}
-.detail-card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  padding: 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.03);
-}
-.detail-top{ display:flex; gap:18px; align-items:center; }
-.detail-img{ width:160px; height:160px; object-fit:contain; background:linear-gradient(180deg,#ffffff05,#00000006); border-radius:12px; padding:8px; }
-.detail-id{ color:var(--muted); font-size:14px; margin-left:8px; }
-
-/* types and badges */
-.types{ margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
-.type{
-  padding:6px 8px;
-  border-radius:999px;
-  font-size:12px;
-  text-transform:capitalize;
-  color:#fff;
-  background:rgba(255,255,255,0.06);
-}
-
-/* colorize by type (few examples) */
-.type-fire{ background: linear-gradient(90deg,#ffb199,#ff6b6b); }
-.type-water{ background: linear-gradient(90deg,#6fb4ff,#2b90ff); }
-.type-grass{ background: linear-gradient(90deg,#b7f0a1,#4bd06a); }
-.type-electric{ background: linear-gradient(90deg,#fff9a6,#ffd34d); color:#2b2b2b; }
-.type-psychic{ background: linear-gradient(90deg,#f5a4f5,#ff79c6); color:#2b2b2b; }
-
-/* stats */
-.stats-list{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(2,1fr); gap:6px; }
-.ability{ display:inline-block; padding:6px 8px; border-radius:6px; background:var(--glass); margin-right:8px; margin-bottom:6px; }
-
-/* tooltip */
-.tooltip{
+/* Fondo de pokebolas suave encima */
+.poke-background {
   position: fixed;
+  inset: 0;
+  background: url("https://pngimg.com/uploads/pokeball/pokeball_PNG8.png") repeat;
+  opacity: 0.08;
+  z-index: -1;
+  background-size: 160px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-img {
+  width: 90px;
+  height: 90px;
+}
+
+/* PANEL FLOTANTE */
+.floating-panel {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  width: 360px;
+  max-width: 95vw;
+  max-height: 82vh;
+  overflow-y: auto;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+  animation: fadeIn 0.25s ease-out;
   z-index: 9999;
-  background: linear-gradient(180deg, rgba(5,8,20,0.95), rgba(15,20,30,0.95));
-  border: 1px solid rgba(255,255,255,0.06);
-  padding:10px;
-  border-radius:8px;
-  min-width:160px;
-  pointer-events:none;
-  color: #e6eef8;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-.tooltip-inner .types{ margin-top:6px; display:flex; gap:6px; }
-
-/* responsive */
-@media (max-width: 1000px){
-  .main { grid-template-columns: 1fr; }
-  .sidebar{ order:2; height:auto; }
-  .detail{ order:3; }
-  .content{ order:1; }
+  border: 4px solid #ff0000;
+  background-image: url("https://i.imgur.com/1bX5QFh.png");
+  background-size: 140%;
+  background-position: center;
+  background-blend-mode: lighten;
 }
 
+/* PANEL INTERNO */
+.panel-bg {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.detail-img {
+  width: 160px;
+}
+
+/* BOTÓN CERRAR */
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: #ff3b3b;
+  border: none;
+  color: white;
+  font-size: 20px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+.close-btn:hover {
+  background: #c40000;
+}
+
+/* TIPOS */
+.type {
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin-right: 6px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.type-fire { background: #f08030; }
+.type-water { background: #6890f0; }
+.type-grass { background: #78c850; }
+.type-poison { background: #a040a0; }
+.type-bug { background: #a8b820; }
+.type-electric { background: #f8d030; }
+
+/* Habilidades */
+.abilities .ability {
+  background: #0f0f0f;
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 4px;
+  font-size: 13px;
+}
+
+/* PAGINACIÓN */
 .pagination {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin-top: 20px;
+  gap: 15px;
 }
-
 .pagination button {
-  background: var(--glass);
-  color: #fff;
   padding: 8px 14px;
+  background: #e63946;
+  color: rgb(4, 4, 4);
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: none;
   cursor: pointer;
-  transition: .2s;
+}
+.pagination span {
+  font-weight: bold;
+  color: rgb(9, 9, 9);
 }
 
-.pagination button:hover:not(:disabled) {
-  background: rgba(255,255,255,0.08);
+/* ANIMACIÓN */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -45%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
-.pagination button:disabled {
-  opacity: .3;
-  cursor: not-allowed;
-}
-
-/* ================================
-   RESPONSIVE: TABLET
-================================ */
-@media (max-width: 1024px) {
-  .main {
-    grid-template-columns: 260px 1fr;
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .floating-panel {
+    width: 90%;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
   }
-
-  .detail {
-    display: none; /* Ocultar panel derecho en tablet */
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-}
-
-/* ================================
-   RESPONSIVE: CELULAR
-================================ */
-@media (max-width: 768px) {
-  .main {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .sidebar {
-    width: 100%;
-    position: relative;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .list-scroll {
-    max-height: 250px;
-  }
-
-  .content {
-    padding: 10px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
-  .card-img img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .detail {
-    width: 100%;
-    position: relative;
-    border-left: none;
-    border-top: 1px solid #ddd;
-    margin-top: 20px;
-    padding: 10px;
-  }
-
-  .detail-card {
-    margin: 0 auto;
-  }
-
-  .detail-top {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
   .detail-img {
-    width: 160px;
-    height: 160px;
+    width: 130px;
   }
-
-  .header h1 {
-    font-size: 24px;
-  }
-}
-
-/* ================================
-   RESPONSIVE EXTRA SMALL (360px)
-================================ */
-@media (max-width: 400px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-
-  .card-img img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .search {
-    font-size: 14px;
-    padding: 8px;
-  }
-}
-/* ---------- RESPONSIVE DESIGN ---------- */
-
-/* Para tablets */
-@media (max-width: 1024px) {
-  .main {
-    grid-template-columns: 220px 1fr;
-  }
-
-  .detail {
-    display: none;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-}
-
-/* Para celulares */
-@media (max-width: 768px) {
-  .main {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    width: 100%;
-    order: 1;
-  }
-
-  .content {
-    order: 2;
-  }
-
-  .detail {
-    order: 3;
-    width: 100%;
-    display: block;
-    margin-top: 20px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  }
-
-  .card {
-    padding: 10px;
-  }
-
-  .detail-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .detail-top {
-    flex-direction: column;
-    align-items: center;
+  .card-img {
+    width: 75px;
   }
 }
