@@ -1,24 +1,43 @@
 // src/api.js
 const BASE = "https://pokeapi.co/api/v2";
 
-export async function getAllPokemons(limit = 10000) {
-  // devuelve [{ name, url, id, image }]
-  const res = await fetch(`${BASE}/pokemon?limit=${limit}`);
+// 🔹 Esta función carga TODOS los Pokémon (nombres + id + imagen)
+export async function getAllPokemons() {
+  const res = await fetch(`${BASE}/pokemon?limit=1118`);
   const data = await res.json();
-  // parsear id desde la url y crear image oficial
+
   return data.results.map((p) => {
-    const parts = p.url.split("/").filter(Boolean);
-    const id = parts[parts.length - 1];
+    const id = p.url.split("/").filter(Boolean).pop();
     const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-    return { name: p.name, url: p.url, id, image };
+
+    return { name: p.name, id, image };
   });
 }
 
+// 🔹 Función paginada (no la estás usando ahora, pero la dejamos)
+export async function getPaginatedPokemons(page = 1, limit = 30) {
+  const offset = (page - 1) * limit;
+  const res = await fetch(`${BASE}/pokemon?offset=${offset}&limit=${limit}`);
+  const data = await res.json();
+
+  const results = data.results.map((p) => {
+    const id = p.url.split("/").filter(Boolean).pop();
+    const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+    return { name: p.name, id, image };
+  });
+
+  return {
+    pokemons: results,
+    total: data.count,
+  };
+}
+
+// 🔹 Función para leer detalles de un Pokémon
 export async function getPokemon(nameOrId) {
   const res = await fetch(`${BASE}/pokemon/${nameOrId}`);
   if (!res.ok) throw new Error("No se pudo cargar el Pokémon");
   const data = await res.json();
-  // formatear datos que usaremos
+
   return {
     id: data.id,
     name: data.name,
@@ -30,3 +49,5 @@ export async function getPokemon(nameOrId) {
     abilities: data.abilities.map((a) => a.ability.name),
   };
 }
+
+

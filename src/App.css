@@ -182,3 +182,187 @@ body, html, #root {
   .detail{ order:3; }
   .content{ order:1; }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background: var(--glass);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: .2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: rgba(255,255,255,0.08);
+}
+
+.pagination button:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+/* ================================
+   RESPONSIVE: TABLET
+================================ */
+@media (max-width: 1024px) {
+  .main {
+    grid-template-columns: 260px 1fr;
+  }
+
+  .detail {
+    display: none; /* Ocultar panel derecho en tablet */
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* ================================
+   RESPONSIVE: CELULAR
+================================ */
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .list-scroll {
+    max-height: 250px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .card-img img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .detail {
+    width: 100%;
+    position: relative;
+    border-left: none;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+    padding: 10px;
+  }
+
+  .detail-card {
+    margin: 0 auto;
+  }
+
+  .detail-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .detail-img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+}
+
+/* ================================
+   RESPONSIVE EXTRA SMALL (360px)
+================================ */
+@media (max-width: 400px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .card-img img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .search {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+/* ---------- RESPONSIVE DESIGN ---------- */
+
+/* Para tablets */
+@media (max-width: 1024px) {
+  .main {
+    grid-template-columns: 220px 1fr;
+  }
+
+  .detail {
+    display: none;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Para celulares */
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    width: 100%;
+    order: 1;
+  }
+
+  .content {
+    order: 2;
+  }
+
+  .detail {
+    order: 3;
+    width: 100%;
+    display: block;
+    margin-top: 20px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .detail-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .detail-top {
+    flex-direction: column;
+    align-items: center;
+  }
+}

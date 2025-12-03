@@ -1,7 +1,8 @@
 // src/App.js
 import React, { useEffect, useState, useRef } from "react";
-import { getAllPokemons, getPokemon } from "./api";
+import { getAllPokemons, getPokemon,  getPaginatedPokemons  } from "./api";
 import "./App.css";
+
 
 function Tooltip({ x, y, children, visible }) {
   if (!visible) return null;
@@ -44,9 +45,17 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const detailsCache = useRef(new Map());
   const hoverTimer = useRef(null);
+  const [page, setPage] = useState(1);
+const limit = 30; // Puedes cambiarlo
+
 
   // Tooltip state
-  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, content: null });
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    content: null
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -57,6 +66,20 @@ export default function App() {
     })();
     return () => (mounted = false);
   }, []);
+
+  useEffect(() => {
+  let mounted = true;
+
+  (async () => {
+    const pageData = await getPaginatedPokemons(page, limit);
+    if (!mounted) return;
+
+    setList(pageData);
+  })();
+
+  return () => (mounted = false);
+}, [page]);
+
 
   const handleClick = async (pokemon) => {
     // ver si está en cache
@@ -70,14 +93,14 @@ export default function App() {
   };
 
   const handleHover = (e, pokemon) => {
-    // cancel timer
+    // cancelar timer
     if (!e || !pokemon) {
       setTooltip((t) => ({ ...t, visible: false }));
       return;
     }
     const x = e.clientX;
     const y = e.clientY;
-    // debounce: esperar 250ms antes de fetch
+
     clearTimeout(hoverTimer.current);
     hoverTimer.current = setTimeout(async () => {
       let info = detailsCache.current.get(pokemon.name);
@@ -96,7 +119,9 @@ export default function App() {
           y,
           content: (
             <div className="tooltip-inner">
-              <strong>#{String(info.id).padStart(3, "0")} {info.name}</strong>
+              <strong>
+                #{String(info.id).padStart(3, "0")} {info.name}
+              </strong>
               <div className="types">
                 {info.types.map((t) => (
                   <span key={t} className={"type type-" + t}>
@@ -106,11 +131,13 @@ export default function App() {
               </div>
               <div className="stat-row">
                 {info.stats.slice(0, 3).map((s) => (
-                  <div key={s.name}>{s.name}: {s.value}</div>
+                  <div key={s.name}>
+                    {s.name}: {s.value}
+                  </div>
                 ))}
               </div>
             </div>
-          ),
+          )
         });
       }
     }, 180);
@@ -123,6 +150,7 @@ export default function App() {
       </header>
 
       <main className="main">
+        {/* Sidebar */}
         <aside className="sidebar">
           <input
             placeholder="Buscar Pokémon..."
@@ -130,17 +158,20 @@ export default function App() {
             onChange={(e) => {
               const q = e.target.value.toLowerCase();
               if (!q) {
-                setList((l) => l.slice()); // no filtrar (si quieres refactorizar usa original copy)
-                // we'll reload list from API if needed — for simplicity here we filter client-side
+                setList((l) => l.slice());
               } else {
-                // filter client side
                 setList((prev) => prev.filter((p) => p.name.includes(q)));
               }
             }}
           />
+
           <div className="list-scroll">
             {list.map((p) => (
-              <div key={p.name} className="list-item" onClick={() => handleClick(p)}>
+              <div
+                key={p.name}
+                className="list-item"
+                onClick={() => handleClick(p)}
+              >
                 <img src={p.image} alt={p.name} className="list-thumb" />
                 <span>{p.name}</span>
               </div>
@@ -148,6 +179,7 @@ export default function App() {
           </div>
         </aside>
 
+        {/* Grid */}
         <section className="content">
           <div className="grid">
             {list.map((p) => (
@@ -161,6 +193,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Detail Panel */}
         <section className="detail">
           {selected ? (
             <div className="detail-card">
@@ -171,10 +204,15 @@ export default function App() {
                   alt={selected.name}
                 />
                 <div>
-                  <h2>{selected.name} <span className="detail-id">#{selected.id}</span></h2>
+                  <h2>
+                    {selected.name}{" "}
+                    <span className="detail-id">#{selected.id}</span>
+                  </h2>
                   <div className="types">
                     {selected.types.map((t) => (
-                      <span key={t} className={"type type-" + t}>{t}</span>
+                      <span key={t} className={"type type-" + t}>
+                        {t}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -191,12 +229,16 @@ export default function App() {
                 </ul>
 
                 <h3>Info</h3>
-                <p>Altura: {selected.height} • Peso: {selected.weight}</p>
+                <p>
+                  Altura: {selected.height} • Peso: {selected.weight}
+                </p>
 
                 <h3>Habilidades</h3>
                 <div className="abilities">
                   {selected.abilities.map((a) => (
-                    <span key={a} className="ability">{a}</span>
+                    <span key={a} className="ability">
+                      {a}
+                    </span>
                   ))}
                 </div>
               </div>
